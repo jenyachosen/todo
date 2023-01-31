@@ -24,7 +24,7 @@ function render() {
   listElement.innerHTML = data
     .map((item, index) => {
       const isEdit = editedId && item.id === editedId;
-      return `<li class="list-group-item d-flex justify-content-between mb-4">${++index}. 
+      return `<li class="list-group-item d-flex justify-content-between">${++index}. 
       ${
         isEdit
           ? `<input class="update-input form-control" value="${item.text}"/>`
