@@ -3,15 +3,18 @@ let state = {
   editedId: "",
 };
 
-let localState = localStorage.getItem("state");
+if (localStorage.getItem("data")) {
+  state.data = JSON.parse(localStorage.getItem("data"));
+}
 
-if (localState) {
-  state = JSON.parse(localState);
+if (sessionStorage.getItem("editedId")) {
+  state.editedId = sessionStorage.getItem("editedId");
 }
 
 function setState(newState) {
   state = newState;
-  localStorage.setItem("state", JSON.stringify(state));
+  localStorage.setItem("data", JSON.stringify(state.data));
+  sessionStorage.setItem("editedId", state.editedId);
   render();
 }
 
@@ -21,24 +24,26 @@ function render() {
   listElement.innerHTML = data
     .map((item, index) => {
       const isEdit = editedId && item.id === editedId;
-      return `<li class="list-group-item">${++index}. 
+      return `<li class="list-group-item d-flex justify-content-between">${++index}. 
       ${
         isEdit
           ? `<input class="update-input form-control" value="${item.text}"/>`
           : item.text
       }
+      <div class="d-flex">
       ${
         isEdit
-          ? '<button type="button" class="btn btn-primary update-button" data-id="' +
+          ? '<button type="button" class="btn btn-primary update-button ms-2" data-id="' +
             item.id +
             '">Update</button>'
-          : '<button type="button" class="btn btn-primary edit-button" data-id="' +
+          : '<button type="button" class="btn btn-primary edit-button ms-2" data-id="' +
             item.id +
             '">Edit</button>'
       }
-      <button type="button" class="btn btn-danger delete-button" data-id=${
+      <button type="button" class="btn btn-danger delete-button ms-2" data-id=${
         item.id
       }>Delete</button>
+      </div>
       </li>`;
     })
     .join("");
@@ -114,14 +119,15 @@ render();
 // console.dir(buttonElement);
 // console.dir(inputElement.value);
 
-/* Jan 24, 2023
-- Add Editing
-- state
-- Add any library of components
+/* Jan 31, 2023
+- SessionStorage, Cookie, LocalStorage
 
-DZ:
-- Save state to SessionStorage or Cookie
-https://developer.mozilla.org/ru/docs/Web/API/Window/sessionStorage
-https://developer.mozilla.org/ru/docs/Web/HTTP/Cookies
+DZ: Confirm popup:
+it will be removed
+YES NO
+
+
+
+
 
 */

@@ -1,0 +1,43 @@
+html {
+  font-size: 16px;
+}
+
+.wrapper {
+  max-width: 700px;
+}
+
+.priority {
+  display: none;
+  position: fixed;
+  background-color: bisque;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+}
+.priority.opened {
+  display: flex;
+}
+
+.wind {
+  background-color: #ffffff;
+  width: 500px;
+  min-height: 300px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.body {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
