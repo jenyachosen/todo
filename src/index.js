@@ -3,6 +3,8 @@ let state = {
   editedId: "",
 };
 
+console.log("hi");
+
 if (localStorage.getItem("data")) {
   state.data = JSON.parse(localStorage.getItem("data"));
 }
