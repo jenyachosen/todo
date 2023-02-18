@@ -14,10 +14,6 @@ let state = {
   removingItemId: null,
 };
 
-console.log('====================================');
-console.log({state});
-console.log('====================================');
-
 if (localStorage.getItem("data")) {
   state.data = JSON.parse(localStorage.getItem("data"));
 }
@@ -32,49 +28,24 @@ function setState(newState) {
   sessionStorage.setItem("editedId", state.editedId);
   render();
 }
-const buttonSort = document.querySelector('.sort');
 
-buttonSort.addEventListener('click', (e) => {
-  if (buttonSort.innerHTML == 'A-Z') {
- 
+const sortAZ = () => state.data.sort((a, b) => a.text > b.text ? 1 : -1);
+
+const sortZA = () => state.data.sort((a, b) => b.text > a.text ? 1 : -1);
+
+const sortingMethod = target => {
+  if (target.innerText === 'A-Z') {
     sortAZ()
-    buttonSort.innerHTML = 'Z-A'
+    target.innerText = 'Z-A'
   } else {
     sortZA();
-    buttonSort.innerHTML = 'A-Z'
+    target.innerText = 'A-Z'
   }
+
   render()
-})
+};
 
-function sortAZ(){
-  state.data.sort((a, b)=>{
-    if(a.text > b.text){
-      return 1
-    }
-    if(a.text < b.text){
-      return -1
-    }
-    return 0
-  })
-  render()
-}
-function sortZA(){
-  state.data.sort((a, b)=>{
-    if(b.text > a.text){
-      return 1
-    }
-    if(b.text < a.text){
-      return -1
-    }
-    return 0
-  })
-}
-
-
-function render() {
-  const { data, editedId } = state;
-  const listElement = document.querySelector("#list");
-  listElement.innerHTML = data
+const renderDueToPriority = (data, editedId) => data
     .map((item, index) => {
       const isEdit = editedId && item.id === editedId;
       return `<li class="list-group-item d-flex justify-content-between align-items-center">
@@ -116,6 +87,18 @@ function render() {
       </li>`;
     })
     .join("");
+
+  const getDataByPriority = priority => list => list.priority === priority; 
+
+function render() {
+  const { data, editedId } = state;
+  const listLowElement = document.querySelector("#list-low");
+  const listMediumElement = document.querySelector("#list-medium");
+  const listHighElement = document.querySelector("#list-high");
+
+  listLowElement.innerHTML = renderDueToPriority(data.filter(getDataByPriority('low')), editedId);
+  listMediumElement.innerHTML = renderDueToPriority(data.filter(getDataByPriority('middle')), editedId);
+  listHighElement.innerHTML = renderDueToPriority(data.filter(getDataByPriority('high')), editedId);
 }
 
 function addTask() {
@@ -126,16 +109,6 @@ function addTask() {
     text: input.value,
     priority: LOW_PRIORITY,
   });
-
-
-  // state.data.sort((a, b)=> {
-  //   if(a > b){
-  //     return 1
-  //   }else{
-  //     return -1
-  //   }
-  // })
-  // console.log(state.data);
 
   setState({ ...state, data: state.data });
 
@@ -199,8 +172,8 @@ document.querySelector(".task-button").addEventListener("click", () => {
   addTask();
 });
 
-document.addEventListener("click", (event) => {
-  const target = event.target;
+document.addEventListener("click", (ev) => {
+  const target = ev.target;
   if (target.classList.contains("delete-button")) {
     showDeleteWindow(target);
   }
@@ -219,6 +192,9 @@ document.addEventListener("click", (event) => {
   }
   if (target.classList.contains("remove-wind-button")) {
     deleteTask();
+  }
+  if (target.classList.contains("sort")) {
+    sortingMethod(target)
   }
 });
 
