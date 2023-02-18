@@ -3,7 +3,7 @@ html {
 }
 
 .wrapper {
-  max-width: 900px;
+  max-width: 1200px;
 }
 
 .sort {
@@ -69,4 +69,16 @@ html {
 
 .high {
   background-color: #dc3545;
+}
+
+.first-low {
+  background-color: #0D6EFD;
+}
+
+.second-medium {
+  background-color: #FD9842;
+}
+
+.third-high {
+  background-color: #E35C6A;
 }
